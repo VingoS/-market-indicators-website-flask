@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores de Mercado</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Indicadores de Mercado</h1>
+        <ul>
+            {% for currency, rate in data.items() %}
+                <li>{{ currency }}: {{ rate }}</li>
+            {% endfor %}
+        </ul>
+        
+        <!-- Formulário de Conversão -->
+        <h2>Conversão de Moeda</h2>
+        <form method="POST">
+            <label for="amount">Insira um valor:</label>
+            <input type="number" step="any" name="amount" id="amount" required>
+            
+            <label for="currency_from">Moeda de entrada:</label>
+            <select name="currency_from" id="currency_from">
+                {% for currency in data.keys() %}
+                    <option value="{{ currency }}">{{ currency }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="currency_to">Moeda de saída:</label>
+            <select name="currency_to" id="currency_to">
+                {% for currency in data.keys() %}
+                    <option value="{{ currency }}">{{ currency }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">Converter</button>
+        </form>
+
+        <!-- Exibir o valor convertido, se disponível -->
+        {% if converted_value %}
+        <h3>Resultado da Conversão:</h3>
+        <p>Valor convertido: {{ converted_value | round(2) }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
